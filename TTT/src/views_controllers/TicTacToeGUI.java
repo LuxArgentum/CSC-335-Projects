@@ -34,21 +34,19 @@ import model.TicTacToeGame;
 
 public class TicTacToeGUI extends Application {
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
+    public static final int width = 254;
+    public static final int height = 360;
     private TicTacToeGame theGame;
-
     private OurObserver currentView;
-    private OurObserver textAreaView;
     // TBA:
     // private OurObserver buttonView;
     // private OurObserver drawingView;
-
+    private OurObserver textAreaView;
     private BorderPane window;
-    public static final int width = 254;
-    public static final int height = 360;
+
+    public static void main(String[] args) {
+        launch(args);
+    }
 
     public void start(Stage stage) {
         stage.setTitle("Tic Tac Toe");

@@ -3,7 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AdvancedAI implements TicTacToeStrategy{
+public class AdvancedAI implements TicTacToeStrategy {
     @Override
     public OurPoint desiredMove(TicTacToeGame theGame) {
         char[][] currBoard = theGame.getTicTacToeBoard().clone();

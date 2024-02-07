@@ -81,6 +81,28 @@ public class TextAreaView extends BorderPane implements OurObserver {
         moveButton.setOnAction(buttonHandler);
     }
 
+    // This method is called by Observable's notifyObservers()
+    @Override
+    public void update(Object observable) {
+        theGame = (TicTacToeGame) observable;
+        updateView();
+        if (theGame.didWin('X')) {
+            moveButton.setText("X wins");
+            gameOver = true;
+        } else if (theGame.didWin('O')) {
+            moveButton.setText("O wins");
+            gameOver = true;
+        } else if (theGame.tied()) {
+            moveButton.setText("Tie");
+            gameOver = true;
+        }
+//        System.out.println("update called from OurObservable TicTacToeGame " + theGame);
+    }
+
+    private void updateView() {
+        message.setText(getBoardString());
+    }
+
     private class buttonHandler implements EventHandler<ActionEvent> {
         @Override
         public void handle(ActionEvent arg0) {
@@ -103,27 +125,5 @@ public class TextAreaView extends BorderPane implements OurObserver {
                 }
             }
         }
-    }
-
-    // This method is called by Observable's notifyObservers()
-    @Override
-    public void update(Object observable) {
-        theGame = (TicTacToeGame) observable;
-        updateView();
-        if (theGame.didWin('X')) {
-            moveButton.setText("X wins");
-            gameOver = true;
-        } else if (theGame.didWin('O')) {
-            moveButton.setText("O wins");
-            gameOver = true;
-        } else if (theGame.tied()) {
-            moveButton.setText("Tie");
-            gameOver = true;
-        }
-//        System.out.println("update called from OurObservable TicTacToeGame " + theGame);
-    }
-
-    private void updateView() {
-        message.setText(getBoardString());
     }
 }

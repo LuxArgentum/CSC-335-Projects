@@ -31,8 +31,7 @@ public class RunTTT {
 
             if (row > 2 || row < 0 || col > 2 || col < 0) {
                 System.out.println("Invalid input, try again.");
-            }
-            else if (!game.available(row, col)) {
+            } else if (!game.available(row, col)) {
                 System.out.println("Square taken, try again.");
             } else {
                 game.humanMove(row, col, false);
