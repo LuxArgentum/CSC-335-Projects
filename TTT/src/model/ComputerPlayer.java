@@ -19,7 +19,7 @@ public class ComputerPlayer {
     /**
      * Change the AI for this ComputerPlayer.
      *
-     * @param strategy  Any type that implements TicTacToeStrategy
+     * @param strategy Any type that implements TicTacToeStrategy
      */
     public void setStrategy(TicTacToeStrategy strategy) {
         myStrategy = strategy;
@@ -29,7 +29,6 @@ public class ComputerPlayer {
      * Delegate to my strategy, which can "see" the game for my next move
      *
      * @param theGame The current state of the game when asked for a move
-     *
      * @return A point that store two ints: an row and a colim
      */
     public OurPoint desiredMove(TicTacToeGame theGame) {

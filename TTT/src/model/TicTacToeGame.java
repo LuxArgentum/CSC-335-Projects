@@ -76,7 +76,6 @@ public class TicTacToeGame extends OurObservable {
      * @param row     The row the player moves to
      * @param col     The column the player moves to column
      * @param testing Passed the value of true during testing
-     *
      */
     public void humanMove(int row, int col, boolean testing) {
         if (board[row][col] != '_')
@@ -174,7 +173,6 @@ public class TicTacToeGame extends OurObservable {
      * Decide if either of the two players have won
      *
      * @param playerChar X or O so the user can find out if either one has won
-     *
      * @return True if X or O wins
      */
     public boolean didWin(char playerChar) {
