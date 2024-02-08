@@ -89,9 +89,11 @@ public class DrawingView extends BorderPane implements OurObserver {
     }
 
     private void checkGameState() {
-        if (theGame.stillRunning()) {
+        if (theGame.stillRunning() && gameOver) {
             gameOver = false;
             gameStateLabel.setText("Click to make a move");
+            gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+            drawBoard();
         } else {
             if (theGame.didWin('X')) {
                 gameStateLabel.setText("X wins");
