@@ -13,8 +13,8 @@ package model;
 
 public class TicTacToeGame extends OurObservable {
     private char[][] board;
-    private int size;
-    private ComputerPlayer computerPlayer;
+    private final int size;
+    private final ComputerPlayer computerPlayer;
 
     public TicTacToeGame() {
         size = 3;
@@ -85,7 +85,7 @@ public class TicTacToeGame extends OurObservable {
             board[row][col] = 'X';
             if (!testing && this.stillRunning()) {
                 OurPoint move = computerPlayer.desiredMove(this);
-                computerMove(move.row, (int) move.col);
+                computerMove(move.row, move.col);
             }
         }
         notifyObservers(this);
@@ -219,10 +219,8 @@ public class TicTacToeGame extends OurObservable {
         for (int r = size - 1; r >= 0; r--)
             if (board[size - r - 1][r] == playerChar)
                 sum++;
-        if (sum == size)
-            return true;
+        return sum == size;
 
         // No win on either diagonal
-        return false;
     }
 }

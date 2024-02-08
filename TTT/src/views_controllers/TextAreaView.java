@@ -1,13 +1,12 @@
 // Matthew Song
 
 package views_controllers;
+/*
+  This is the beginning of one view of a Tic Tac Toe game using
+  two TextField objects and one TextArea. The other two views
+  of ButtonView and DrawingView follow the same structure as this.
 
-/**
- * This is the beginning of one view of a Tic Tac Toe game using
- * two TextField objects and one TextArea. The other two views
- * of ButtonView and DrawingView follow the same structure as this.
- *
- * @author Rick Mercer and Matthew Song
+  @author Rick Mercer and Matthew Song
  */
 
 import javafx.event.ActionEvent;
@@ -27,13 +26,13 @@ import model.TicTacToeGame;
 public class TextAreaView extends BorderPane implements OurObserver {
 
     private TicTacToeGame theGame;
-    private TextArea message = new TextArea();
-    private Label rowLabel = new Label("Enter Row");
-    private Label colLabel = new Label("Enter Column");
-    private Button moveButton = new Button("Make Move");
-    private TextField rowField = new TextField();
-    private TextField colField = new TextField();
-    private VBox getMove = new VBox();
+    private final TextArea message = new TextArea();
+    private final Label rowLabel = new Label("Enter Row");
+    private final Label colLabel = new Label("Enter Column");
+    private final Button moveButton = new Button("Make Move");
+    private final TextField rowField = new TextField();
+    private final TextField colField = new TextField();
+    private final VBox getMove = new VBox();
     private boolean gameOver = false;
 
     public TextAreaView(TicTacToeGame theModel) {

@@ -2,25 +2,25 @@
 
 package views_controllers;
 
-/**
- * Play TicTacToe the computer that can have different AIs to beat you.
- * Select the Options menus to begin a new game, switch strategies for
- * the computer player (BOT or AI), and to switch between the two views.
- * <p>
- * This class represents an event-driven program with a graphical user
- * interface as a controller between the view and the model. It has
- * event handlers to mediate between the view and the model.
- * <p>
- * This controller employs the Observer design pattern that updates two
- * views every time the state of the Tic Tac Toe game changes:
- * <p>
- * 1) whenever you make a move by clicking a button or an area of either view
- * 2) whenever the computer AI makes a move
- * 3) whenever there is a win or a tie
- * <p>
- * You can also select two different strategies to play against from the menus
- *
- * @author Rick Mercer and Matthew Song
+/*
+  Play TicTacToe the computer that can have different AIs to beat you.
+  Select the Options menus to begin a new game, switch strategies for
+  the computer player (BOT or AI), and to switch between the two views.
+  <p>
+  This class represents an event-driven program with a graphical user
+  interface as a controller between the view and the model. It has
+  event handlers to mediate between the view and the model.
+  <p>
+  This controller employs the Observer design pattern that updates two
+  views every time the state of the Tic Tac Toe game changes:
+  <p>
+  1) whenever you make a move by clicking a button or an area of either view
+  2) whenever the computer AI makes a move
+  3) whenever there is a win or a tie
+  <p>
+  You can also select two different strategies to play against from the menus
+
+  @author Rick Mercer and Matthew Song
  */
 
 import javafx.application.Application;
@@ -39,8 +39,8 @@ public class TicTacToeGUI extends Application {
     private TicTacToeGame theGame;
     private OurObserver currentView;
     // TBA:
-    // private OurObserver buttonView;
-    // private OurObserver drawingView;
+    private OurObserver buttonView;
+    private OurObserver drawingView;
     private OurObserver textAreaView;
     private BorderPane window;
 
@@ -55,13 +55,16 @@ public class TicTacToeGUI extends Application {
         initializeGameForTheFirstTime();
 
         // TBA: Set up the views in Sprint 2
-        // buttonView = new ButtonView(theGame);
-        // drawingView = new DrawingView(theGame);
-        // theGame.addObserver(buttonView);
-        // theGame.addObserver(drawingView);
+        buttonView = new ButtonView(theGame);
+        drawingView = new DrawingView(theGame);
         textAreaView = new TextAreaView(theGame);
+
+        theGame.addObserver(buttonView);
+        theGame.addObserver(drawingView);
         theGame.addObserver(textAreaView);
-        setViewTo(textAreaView);
+
+        // FIXME: Change the view back to textAreaView
+        setViewTo(buttonView);
         stage.setScene(scene);
         stage.show();
     }

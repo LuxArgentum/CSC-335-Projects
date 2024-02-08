@@ -19,5 +19,5 @@ public interface TicTacToeStrategy {
      * For example, the implementing strategy has to know if a
      * move can win the game, or if it would be wise to block.
      */
-    public OurPoint desiredMove(TicTacToeGame theGame);
+    OurPoint desiredMove(TicTacToeGame theGame);
 }
