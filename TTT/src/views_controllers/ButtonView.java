@@ -1,3 +1,5 @@
+// Author: Matthew Song
+
 package views_controllers;
 
 import javafx.event.ActionEvent;
@@ -7,7 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.text.Font;
 import model.OurObserver;
 import model.TicTacToeGame;
@@ -17,6 +19,7 @@ public class ButtonView extends BorderPane implements OurObserver {
     private TicTacToeGame theGame;
 
     private GridPane buttonGrid;
+    private Button[][] buttons;
     private Label gameStateLabel;
 
     private boolean gameOver = false;
@@ -28,14 +31,6 @@ public class ButtonView extends BorderPane implements OurObserver {
 
     private void createGUI() {
 
-        // Text at top that says "Options"
-        Label optionLabel = new Label("Options");
-        optionLabel.setFont(new Font("Arial", 15));
-        optionLabel.setPadding(new javafx.geometry.Insets(10, 10, 10, 10));
-        optionLabel.setAlignment(Pos.BASELINE_LEFT);
-
-        this.setTop(optionLabel);
-
         // 3x3 grid of buttons
         createButtonGrid();
         this.setCenter(buttonGrid);
@@ -44,13 +39,17 @@ public class ButtonView extends BorderPane implements OurObserver {
         Font gameStateFont = new Font("Arial", 20);
         gameStateLabel = new Label("Click to make a move");
         gameStateLabel.setFont(gameStateFont);
-        gameStateLabel.setStyle("-fx-alignment: center;");
-        this.setBottom(gameStateLabel);
+        gameStateLabel.setAlignment(Pos.CENTER);
+        StackPane gameStatePane = new StackPane();
+        gameStatePane.getChildren().add(gameStateLabel);
+        gameStatePane.setAlignment(Pos.CENTER);
+        gameStatePane.setPadding(new javafx.geometry.Insets(10, 10, 40, 10));
+        this.setBottom(gameStatePane);
     }
 
     private void createButtonGrid() {
         buttonGrid = new GridPane();
-        Button[][] buttons = new Button[3][3];
+        buttons = new Button[3][3];
         for (int row = 0; row < 3; row++) {
             for (int col = 0; col < 3; col++) {
                 buttons[row][col] = new Button("_");
@@ -68,19 +67,34 @@ public class ButtonView extends BorderPane implements OurObserver {
     public void update(Object observable) {
         // TODO: Implement update() method
         theGame = (TicTacToeGame) observable;
+        updateBoard();
         checkGameState();
     }
 
+    private void updateBoard() {
+        char[][] board = theGame.getTicTacToeBoard();
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < 3; col++) {
+                buttons[row][col].setText(Character.toString(board[row][col]));
+            }
+        }
+    }
+
     private void checkGameState() {
-        if (theGame.didWin('X')) {
-            gameStateLabel.setText("X wins");
-            gameOver = true;
-        } else if (theGame.didWin('O')) {
-            gameStateLabel.setText("O wins");
-            gameOver = true;
-        } else if (theGame.tied()) {
-            gameStateLabel.setText("Tie");
-            gameOver = true;
+        if (theGame.stillRunning()) {
+            gameOver = false;
+            gameStateLabel.setText("Click to make a move");
+        } else {
+            if (theGame.didWin('X')) {
+                gameStateLabel.setText("X wins");
+                gameOver = true;
+            } else if (theGame.didWin('O')) {
+                gameStateLabel.setText("O wins");
+                gameOver = true;
+            } else if (theGame.tied()) {
+                gameStateLabel.setText("Tie");
+                gameOver = true;
+            }
         }
     }
 
@@ -93,11 +107,17 @@ public class ButtonView extends BorderPane implements OurObserver {
             if (gameOver) return;
 
             Button buttonClicked = (Button) arg0.getSource();
-//            ...
 
-//            if (buttons[row][col] == buttonClicked) {
-//
-//            }
+            // Update the model
+            int row = GridPane.getRowIndex(buttonClicked);
+            int col = GridPane.getColumnIndex(buttonClicked);
+
+            if (!theGame.available(row, col)) {
+                gameStateLabel.setText("Invalid Choice");
+                return;
+            } else {
+                theGame.humanMove(row, col, false);
+            }
         }
     }
 }

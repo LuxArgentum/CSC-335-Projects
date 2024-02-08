@@ -55,7 +55,6 @@ public class TextAreaView extends BorderPane implements OurObserver {
         getMove.getChildren().addAll(rowLabel, rowField, colLabel, colField, moveButton);
 
         this.setCenter(getMove);
-        this.setTop(new Label("Options"));
         this.setBottom(message);
 
         registerHandlers();
@@ -85,15 +84,21 @@ public class TextAreaView extends BorderPane implements OurObserver {
     public void update(Object observable) {
         theGame = (TicTacToeGame) observable;
         updateView();
-        if (theGame.didWin('X')) {
-            moveButton.setText("X wins");
-            gameOver = true;
-        } else if (theGame.didWin('O')) {
-            moveButton.setText("O wins");
-            gameOver = true;
-        } else if (theGame.tied()) {
-            moveButton.setText("Tie");
-            gameOver = true;
+
+        if (theGame.stillRunning()) {
+            gameOver = false;
+            moveButton.setText("Click to make a move");
+        } else {
+            if (theGame.didWin('X')) {
+                moveButton.setText("X wins");
+                gameOver = true;
+            } else if (theGame.didWin('O')) {
+                moveButton.setText("O wins");
+                gameOver = true;
+            } else if (theGame.tied()) {
+                moveButton.setText("Tie");
+                gameOver = true;
+            }
         }
 //        System.out.println("update called from OurObservable TicTacToeGame " + theGame);
     }

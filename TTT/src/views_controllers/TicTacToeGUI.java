@@ -24,10 +24,16 @@ package views_controllers;
  */
 
 import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
+import javafx.scene.control.MenuItem;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
+import model.IntermediateAI;
 import model.OurObserver;
 import model.RandomAI;
 import model.TicTacToeGame;
@@ -55,6 +61,15 @@ public class TicTacToeGUI extends Application {
         initializeGameForTheFirstTime();
 
         // TBA: Set up the views in Sprint 2
+        setObservers();
+
+        menu();
+        setViewTo(textAreaView);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void setObservers() {
         buttonView = new ButtonView(theGame);
         drawingView = new DrawingView(theGame);
         textAreaView = new TextAreaView(theGame);
@@ -62,11 +77,6 @@ public class TicTacToeGUI extends Application {
         theGame.addObserver(buttonView);
         theGame.addObserver(drawingView);
         theGame.addObserver(textAreaView);
-
-        // FIXME: Change the view back to textAreaView
-        setViewTo(buttonView);
-        stage.setScene(scene);
-        stage.show();
     }
 
     /**
@@ -83,6 +93,79 @@ public class TicTacToeGUI extends Application {
         window.setCenter(null);
         currentView = newView;
         window.setCenter((Node) currentView);
+    }
+
+    private void menu() {
+
+        // Menu at top that says "Options"
+        // Options: New Game, Strategies, Views
+        // Strategies: Random, IntermediateAI
+        // Views: TextAreaView, ButtonView, DrawingView
+
+        MenuBar menuBar = new MenuBar();
+        Menu options = new Menu("Options");
+
+        MenuItem newGame = new MenuItem("New Game");
+        Menu strategies = new Menu("Strategies");
+        Menu views = new Menu("Views");
+
+        MenuItem random = new MenuItem("Random");
+        MenuItem intermediateAI = new MenuItem("IntermediateAI");
+        MenuItem textAreaView = new MenuItem("TextAreaView");
+        MenuItem buttonView = new MenuItem("ButtonView");
+        MenuItem drawingView = new MenuItem("DrawingView");
+
+        strategies.getItems().addAll(random, intermediateAI);
+        views.getItems().addAll(textAreaView, buttonView, drawingView);
+
+        options.getItems().addAll(newGame, strategies, views);
+
+        menuBar.getMenus().add(options);
+
+        // Change font and style of menuBar
+        menuBar.setStyle("-fx-font-size: 16;" +
+                "-fx-font-family: 'JetBrains Mono'");
+
+        window.setTop(menuBar);
+
+        menuHandler(newGame, random, intermediateAI, textAreaView, buttonView, drawingView);
+    }
+
+    private void menuHandler(MenuItem newGame, MenuItem random, MenuItem intermediateAI, MenuItem textAreaView, MenuItem buttonView, MenuItem drawingView) {
+        EventHandler<ActionEvent> menuHandler = new MenuHandler();
+        newGame.setOnAction(menuHandler);
+        random.setOnAction(menuHandler);
+        intermediateAI.setOnAction(menuHandler);
+        textAreaView.setOnAction(menuHandler);
+        buttonView.setOnAction(menuHandler);
+        drawingView.setOnAction(menuHandler);
+    }
+
+    private class MenuHandler implements EventHandler<ActionEvent> {
+        @Override
+        public void handle(ActionEvent arg0) {
+            String menuItem = ((MenuItem) arg0.getSource()).getText();
+            switch (menuItem) {
+                case "New Game":
+                    theGame.startNewGame();
+                    break;
+                case "Random":
+                    theGame.setComputerPlayerStrategy(new RandomAI());
+                    break;
+                case "IntermediateAI":
+                    theGame.setComputerPlayerStrategy(new IntermediateAI());
+                    break;
+                case "TextAreaView":
+                    setViewTo(textAreaView);
+                    break;
+                case "ButtonView":
+                    setViewTo(buttonView);
+                    break;
+                case "DrawingView":
+                    setViewTo(drawingView);
+                    break;
+            }
+        }
     }
 
 }
