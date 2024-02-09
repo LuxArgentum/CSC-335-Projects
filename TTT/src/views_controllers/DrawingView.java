@@ -91,7 +91,7 @@ public class DrawingView extends BorderPane implements OurObserver {
     private void checkGameState() {
         if (theGame.stillRunning() && gameOver) {
             gameOver = false;
-            gameStateLabel.setText("Click to make a move");
+            gameStateLabel.setText("Make move");
             gc.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
             drawBoard();
         } else {
@@ -120,7 +120,13 @@ public class DrawingView extends BorderPane implements OurObserver {
 
             if (row > 2 || col > 2) return;
             if (row < 0 || col < 0) return;
+
+            if (!theGame.available(row, col)) {
+                gameStateLabel.setText("Invalid Move");
+                return;
+            }
             if (theGame.stillRunning()) {
+                gameStateLabel.setText("Make move");
                 theGame.humanMove(row, col, false);
             }
         });
